@@ -1,0 +1,409 @@
+:root {
+  --bg: #4c5a4a;
+  --ink: #33291d;
+  --ink-soft: #6b5d49;
+  --faint: #b3a894;
+  --accent: #b0714a;
+  --on-dark: #eceee7;
+  --on-dark-soft: #b7c0b1;
+  --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+}
+
+/* =====================================================
+   CUSTOM LETTER FONTS
+   Add the font files to a /fonts folder (see fonts/README.txt).
+   Until they're present, the fallbacks below are used.
+   ===================================================== */
+@font-face {
+  font-family: "JMH Typewriter Thin";
+  src: url("fonts/JMHTypewriter-Thin.woff2") format("woff2"),
+       url("fonts/JMHTypewriter-Thin.woff") format("woff"),
+       url("fonts/JMHTypewriter-Thin.ttf") format("truetype"),
+       url("fonts/JMHTypewriter-Thin.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SimpleHandmade";
+  src: url("fonts/SimpleHandmade.woff2") format("woff2"),
+       url("fonts/SimpleHandmade.woff") format("woff"),
+       url("fonts/SimpleHandmade.ttf") format("truetype"),
+       url("fonts/SimpleHandmade.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: 'Hubballi', var(--sans);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(1200px 700px at 50% -15%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 60%),
+    var(--bg);
+}
+
+/* =====================================================
+   ENVELOPE SCENE  (large, full-screen intro overlay)
+   ===================================================== */
+.envelope-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  transition: opacity 0.7s ease 0.9s, transform 0.7s ease 0.9s;
+}
+
+.envelope {
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.envelope__label {
+  font-size: 1.35rem;
+  color: var(--on-dark);
+  letter-spacing: 0.06em;
+}
+
+.envelope__body {
+  position: relative;
+  width: min(560px, 92vw);
+  aspect-ratio: 2.15 / 1;
+  perspective: 1200px;
+}
+
+.envelope__back {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(158deg, rgba(255, 255, 255, 0.12), rgba(60, 45, 20, 0.1)),
+    url("env.jpg") center / cover no-repeat;
+  box-shadow:
+    0 2px 4px rgba(10, 20, 10, 0.22),
+    0 18px 42px rgba(10, 20, 10, 0.40);
+}
+
+/* shallow pointed flap — same cream as the body, read only by a soft fold shadow */
+.envelope__flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 36%;
+  z-index: 5;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.12) 55%, rgba(60, 45, 20, 0.18) 100%),
+    url("env.jpg") center / cover no-repeat;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform 0.6s ease, z-index 0s linear 0.3s;
+  backface-visibility: hidden;
+  filter:
+    drop-shadow(0 2px 1.5px rgba(35, 28, 18, 0.5))
+    drop-shadow(0 10px 13px rgba(15, 15, 10, 0.34));
+}
+
+/* metallic wax seal (seal.png, transparent) pressed onto the flap */
+.envelope__seal {
+  position: absolute;
+  z-index: 7;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(56px, 13%, 82px);
+  height: auto;
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.4));
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.envelope__hint {
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--on-dark-soft);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+/* ---------- ENVELOPE OPEN STATE ---------- */
+.is-open .envelope__flap {
+  transform: rotateX(180deg);
+  z-index: 2;
+}
+.is-open .envelope__seal {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+}
+.is-open .envelope__hint {
+  opacity: 0;
+}
+.is-open .envelope-scene {
+  opacity: 0;
+  transform: scale(0.9) translateY(-16px);
+  pointer-events: none;
+}
+
+/* =====================================================
+   FULL-SCREEN PAGED READER
+   ===================================================== */
+.reader {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(900px 600px at 50% 120%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 60%),
+    var(--bg);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.985);
+  transition: opacity 0.6s ease, transform 0.6s ease, visibility 0s linear 0.6s;
+}
+.is-open .reader {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.7s ease 1s, transform 0.7s ease 1s, visibility 0s;
+}
+
+.reader__bar {
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 1.1rem 1rem 0.9rem;
+}
+.reader__brand {
+  font-size: 1.15rem;
+  color: var(--on-dark);
+  letter-spacing: 0.08em;
+}
+
+.reader__viewport {
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+}
+.reader__track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.page {
+  flex: 0 0 100%;
+  height: 100%;
+  display: block;
+  overflow-y: auto;
+  padding: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* =====================================================
+   THE LETTER SHEET  (letterhead layout, floating page)
+   ===================================================== */
+.doc__sheet {
+  position: relative;
+  margin: auto;
+  width: min(780px, 100%);
+  background:
+    linear-gradient(rgba(247, 242, 232, 0.35), rgba(247, 242, 232, 0.35)),
+    url("paper.jpg") center / cover no-repeat #f3ede0;
+  aspect-ratio: 1 / 1.36;
+  padding: clamp(2.5rem, 6.5vw, 5.5rem) clamp(2rem, 6vw, 5rem);
+  border: 1px solid #e7dcc6;
+  border-radius: 2px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  row-gap: clamp(1.75rem, 4vw, 3rem);
+  box-shadow:
+    0 2px 5px rgba(40, 45, 30, 0.10),
+    0 14px 30px rgba(40, 45, 30, 0.18),
+    0 32px 64px rgba(20, 30, 20, 0.26),
+    inset 0 0 70px rgba(120, 100, 60, 0.06);
+}
+
+/* date / occasion block */
+.doc__meta {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: end;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.19em;
+  line-height: 2.1;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* main body column */
+.doc__main {
+  grid-column: 1;
+  grid-row: 2;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+}
+.doc__text {
+  font-size: 0.98rem;
+  line-height: 1.85;
+  color: #4a4034;
+  text-align: left;
+}
+.doc__text p {
+  margin: 0 0 1.05rem;
+}
+
+/* Calvin & Serena — typewriter */
+.doc__text--typewriter {
+  font-family: "JMH Typewriter Thin", "Courier New", Courier, monospace;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  letter-spacing: 0.005em;
+}
+
+/* Jasper & Oliver — handmade / handwritten */
+.doc__text--handmade {
+  font-family: "SimpleHandmade", "Segoe Script", "Bradley Hand", "Comic Sans MS", cursive;
+  font-size: 1.15rem;
+  line-height: 1.85;
+}
+
+/* signature, pushed toward the bottom of the page */
+.doc__sign {
+  margin-top: auto;
+  padding-top: 2.5rem;
+}
+.doc__scribble {
+  font-family: "Snell Roundhand", "Segoe Script", "Bradley Hand", "Brush Script MT", cursive;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--ink);
+}
+.doc__signoff {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.13em;
+  line-height: 1.9;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0.9rem 0 0;
+}
+.doc__role {
+  color: var(--faint);
+}
+
+/* prev / next arrows */
+.reader__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid #e6d8c2;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--accent);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(80, 60, 30, 0.16);
+  transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease;
+  z-index: 5;
+}
+.reader__nav:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.08);
+  background: #fff;
+}
+.reader__nav:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.reader__nav--prev { left: max(1rem, 3vw); }
+.reader__nav--next { right: max(1rem, 3vw); }
+
+/* dots + count */
+.reader__footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1rem 1.4rem;
+}
+.reader__dots {
+  display: flex;
+  gap: 0.6rem;
+}
+.reader__dot {
+  width: 11px;
+  height: 11px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.reader__dot[aria-current="true"] {
+  background: #ffffff;
+  transform: scale(1.3);
+}
+.reader__count {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--on-dark-soft);
+}
+
+/* =====================================================
+   KEYFRAMES
+   ===================================================== */
+@keyframes pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 560px) {
+  .reader__nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.6rem;
+  }
+  .doc__sheet {
+    display: block;
+    aspect-ratio: auto;
+    padding: 2rem 1.5rem 2.5rem;
+  }
+  .doc__meta { margin: 1.25rem 0 0; }
+  .doc__scribble { font-size: 2.1rem; }
+}
+
+/* ---------- Respect reduced-motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .envelope__hint { animation: none; }
+  * {
+    transition-duration: 0.001ms !important;
+    transition-delay: 0.001ms !important;
+  }
+}

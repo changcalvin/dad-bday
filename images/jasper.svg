@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Placeholder photo of Jasper">
+  <rect width="400" height="400" fill="#e4ece0"/>
+  <circle cx="200" cy="150" r="66" fill="#a7bfa0"/>
+  <ellipse cx="200" cy="335" rx="122" ry="95" fill="#a7bfa0"/>
+  <text x="200" y="235" font-family="Georgia, serif" font-size="30" fill="#556e4d" text-anchor="middle" font-weight="bold">Jasper</text>
+</svg>

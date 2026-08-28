@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Placeholder photo of Calvin">
+  <rect width="400" height="400" fill="#f0e4d4"/>
+  <circle cx="200" cy="150" r="66" fill="#d0a97f"/>
+  <ellipse cx="200" cy="335" rx="122" ry="95" fill="#d0a97f"/>
+  <text x="200" y="235" font-family="Georgia, serif" font-size="30" fill="#8a5c38" text-anchor="middle" font-weight="bold">Calvin</text>
+</svg>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Dad!</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎉</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hubballi&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ============ ENVELOPE INTRO (click to open) ============ -->
+  <div class="envelope-scene" id="envelopeScene">
+    <button
+      class="envelope"
+      id="envelope"
+      type="button"
+      aria-expanded="false"
+      aria-controls="reader"
+    >
+      <span class="envelope__label">A very special birthday letter for Dad</span>
+
+      <span class="envelope__body">
+        <span class="envelope__back"></span>
+        <span class="envelope__flap"></span>
+        <img class="envelope__seal" src="seal.png" alt="" aria-hidden="true" />
+      </span>
+
+      <span class="envelope__hint">HAPPY 60TH BIRTHDAY!</span>
+    </button>
+  </div>
+
+  <!-- ============ FULL-SCREEN PAGED READER ============ -->
+  <div class="reader" id="reader">
+    <div class="reader__bar">
+      <span class="reader__brand">Happy Birthday Dad!</span>
+    </div>
+
+    <div class="reader__viewport">
+      <div class="reader__track" id="track">
+
+        <!-- ============ CALVIN ============ -->
+        <!-- To use a real photo: replace images/calvin.svg with images/calvin.jpg -->
+        <article class="page" aria-label="Letter from Calvin">
+          <div class="doc__sheet">
+            <div class="doc__meta">
+              <!-- EDIT: date / occasion -->
+              For Dad<br />
+              On Your Birthday<br />
+              August 2026
+            </div>
+
+            <div class="doc__main doc__name" tabindex="-1">
+              <div class="doc__text doc__text--typewriter">
+                <!-- EDIT: replace with Calvin's message -->
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                  ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse
+                  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                  cupidatat non proident, sunt in culpa qui officia deserunt.</p>
+              </div>
+
+              <div class="doc__sign">
+                <div class="doc__scribble">Calvin</div>
+                <p class="doc__signoff">
+                  Calvin<br />
+                  <span class="doc__role"><!-- EDIT: relationship -->Your son</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============ SERENA ============ -->
+        <article class="page" aria-label="Letter from Serena">
+          <div class="doc__sheet">
+            <div class="doc__meta">
+              For Dad<br />
+              On Your Birthday<br />
+              August 2026
+            </div>
+
+            <div class="doc__main">
+              <div class="doc__text doc__text--typewriter">
+                <!-- EDIT: replace with Serena's message -->
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                  accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
+                  ab illo inventore veritatis et quasi architecto beatae vitae.</p>
+                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut
+                  fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem
+                  sequi nesciunt neque porro quisquam est.</p>
+              </div>
+
+              <div class="doc__sign">
+                <div class="doc__scribble">Serena</div>
+                <p class="doc__signoff">
+                  Serena<br />
+                  <span class="doc__role">Your daughter</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============ JASPER ============ -->
+        <article class="page" aria-label="Letter from Jasper">
+          <div class="doc__sheet">
+            <div class="doc__meta">
+              For Dad<br />
+              On Your Birthday<br />
+              August 2026
+            </div>
+
+            <div class="doc__main">
+              <div class="doc__text doc__text--handmade">
+                <!-- EDIT: replace with Jasper's message -->
+                <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                  blanditiis praesentium voluptatum deleniti atque corrupti quos dolores
+                  et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+                <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero
+                  tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo
+                  minus id quod maxime placeat facere possimus.</p>
+              </div>
+
+              <div class="doc__sign">
+                <div class="doc__scribble">Jasper</div>
+                <p class="doc__signoff">
+                  Jasper<br />
+                  <span class="doc__role">Your son</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ============ OLIVER ============ -->
+        <article class="page" aria-label="Letter from Oliver">
+          <div class="doc__sheet">
+            <div class="doc__meta">
+              For Dad<br />
+              On Your Birthday<br />
+              August 2026
+            </div>
+
+            <div class="doc__main">
+              <div class="doc__text doc__text--handmade">
+                <!-- EDIT: replace with Oliver's message -->
+                <p>Temporibus autem quibusdam et aut officiis debitis aut rerum
+                  necessitatibus saepe eveniet ut et voluptates repudiandae sint et
+                  molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente.</p>
+                <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
+                  impedit quo minus id quod maxime placeat facere possimus, omnis
+                  voluptas assumenda est, omnis dolor repellendus.</p>
+              </div>
+
+              <div class="doc__sign">
+                <div class="doc__scribble">Oliver</div>
+                <p class="doc__signoff">
+                  Oliver<br />
+                  <span class="doc__role">Your son</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- prev / next arrows -->
+    <button class="reader__nav reader__nav--prev" id="prevBtn" type="button" aria-label="Previous letter">‹</button>
+    <button class="reader__nav reader__nav--next" id="nextBtn" type="button" aria-label="Next letter">›</button>
+
+    <!-- dots + page count -->
+    <div class="reader__footer">
+      <div class="reader__dots" id="dots" role="tablist" aria-label="Choose a letter"></div>
+      <span class="reader__count" id="count">1 / 4</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

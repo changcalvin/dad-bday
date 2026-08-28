@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Placeholder photo of Oliver">
+  <rect width="400" height="400" fill="#e0e8f0"/>
+  <circle cx="200" cy="150" r="66" fill="#a0b6cf"/>
+  <ellipse cx="200" cy="335" rx="122" ry="95" fill="#a0b6cf"/>
+  <text x="200" y="235" font-family="Georgia, serif" font-size="30" fill="#4c6484" text-anchor="middle" font-weight="bold">Oliver</text>
+</svg>
