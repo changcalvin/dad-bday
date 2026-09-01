@@ -1,5 +1,5 @@
 :root {
-  --bg: #4c5a4a;
+  --bg: #29372c;
   --ink: #33291d;
   --ink-soft: #6b5d49;
   --faint: #b3a894;
@@ -7,6 +7,12 @@
   --on-dark: #eceee7;
   --on-dark-soft: #b7c0b1;
   --sans: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+  /* envelope paper + the tones derived from it */
+  --paper: #efe9d8;
+  --paper-hi: color-mix(in oklab, var(--paper), white 45%);
+  --paper-hi2: color-mix(in oklab, var(--paper), white 38%);
+  --paper-lo: color-mix(in oklab, var(--paper), #4a3d22 9%);
+  --paper-lo2: color-mix(in oklab, var(--paper), #4a3d22 16%);
 }
 
 /* =====================================================
@@ -61,7 +67,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  transition: opacity 0.7s ease 0.9s, transform 0.7s ease 0.9s;
+  transition: opacity 0.7s ease 1.15s, transform 0.7s ease 1.15s;
 }
 
 .envelope {
@@ -77,91 +83,142 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.75rem;
+  gap: 1.6rem;
 }
 
 .envelope__label {
   font-size: 1.35rem;
   color: var(--on-dark);
   letter-spacing: 0.06em;
+  transition: opacity 0.4s ease;
+}
+
+.envelope__hint {
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--on-dark-soft);
+  animation: pulse 2.2s ease-in-out infinite;
+  transition: opacity 0.3s ease;
 }
 
 .envelope__body {
   position: relative;
-  width: min(560px, 92vw);
-  aspect-ratio: 2.15 / 1;
+  display: block;
+  width: min(460px, 88vw);
+  aspect-ratio: 460 / 300;
   perspective: 1200px;
 }
 
+/* card tucked inside — sits behind the envelope back, rises out when opened */
+.envelope__card {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 4%;
+  bottom: 6%;
+  z-index: 2;
+  display: block;
+  background: linear-gradient(172deg, #fefdfa 0%, #f7f5ee 100%);
+  border-radius: 2px;
+  box-shadow:
+    0 1px 2px rgba(35, 28, 18, 0.18),
+    0 8px 22px rgba(15, 15, 10, 0.22);
+  transform: translateY(0);
+  transition: transform 0.7s cubic-bezier(0.22, 0.9, 0.3, 1) 0.5s;
+}
+
+/* back of the envelope, facing the viewer */
 .envelope__back {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background:
-    linear-gradient(158deg, rgba(255, 255, 255, 0.12), rgba(60, 45, 20, 0.1)),
-    url("env.jpg") center / cover no-repeat;
+  z-index: 3;
+  display: block;
+  overflow: hidden;
+  background: linear-gradient(168deg, var(--paper-hi) 0%, var(--paper) 40%, var(--paper-lo) 100%);
   box-shadow:
-    0 2px 4px rgba(10, 20, 10, 0.22),
-    0 18px 42px rgba(10, 20, 10, 0.40);
+    0 2px 4px rgba(10, 20, 10, 0.25),
+    0 22px 48px rgba(10, 20, 10, 0.42);
 }
 
-/* shallow pointed flap — same cream as the body, read only by a soft fold shadow */
+/* faint fold creases of the side + bottom flaps */
+.envelope__fold {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.envelope__fold--left {
+  clip-path: polygon(0 0, 55% 52%, 0 100%);
+  background: linear-gradient(102deg, rgba(255, 255, 255, 0.30) 0%, rgba(74, 61, 34, 0.05) 72%);
+  filter: drop-shadow(1px 0 1px rgba(74, 61, 34, 0.13));
+}
+.envelope__fold--right {
+  clip-path: polygon(100% 0, 45% 52%, 100% 100%);
+  background: linear-gradient(258deg, rgba(255, 255, 255, 0.30) 0%, rgba(74, 61, 34, 0.05) 72%);
+  filter: drop-shadow(-1px 0 1px rgba(74, 61, 34, 0.13));
+}
+.envelope__fold--bottom {
+  clip-path: polygon(0 100%, 50% 40%, 100% 100%);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.26) 0%, rgba(74, 61, 34, 0.06) 85%);
+  filter: drop-shadow(0 -1px 1px rgba(74, 61, 34, 0.15));
+}
+
+/* pointed top flap — flips up and tucks behind the card when opened */
 .envelope__flap {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 36%;
+  height: 55%;
   z-index: 5;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.12) 55%, rgba(60, 45, 20, 0.18) 100%),
-    url("env.jpg") center / cover no-repeat;
+  display: block;
+  background: linear-gradient(180deg, var(--paper-hi2) 0%, var(--paper) 52%, var(--paper-lo2) 100%);
   clip-path: polygon(0 0, 100% 0, 50% 100%);
   transform-origin: top center;
   transform: rotateX(0deg);
-  transition: transform 0.6s ease, z-index 0s linear 0.3s;
-  backface-visibility: hidden;
+  transition: transform 0.65s ease 0.12s, z-index 0s linear 0.45s;
   filter:
-    drop-shadow(0 2px 1.5px rgba(35, 28, 18, 0.5))
-    drop-shadow(0 10px 13px rgba(15, 15, 10, 0.34));
+    drop-shadow(0 2px 1.5px rgba(35, 28, 18, 0.42))
+    drop-shadow(0 10px 13px rgba(15, 15, 10, 0.3));
 }
 
-/* metallic wax seal (seal.png, transparent) pressed onto the flap */
-.envelope__seal {
+/* white liner, only revealed on the flipped (inner) face */
+.envelope__liner {
   position: absolute;
-  z-index: 7;
-  top: 36%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: clamp(56px, 13%, 82px);
-  height: auto;
-  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.4));
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.envelope__hint {
-  font-size: 0.85rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--on-dark-soft);
-  animation: pulse 2.2s ease-in-out infinite;
+  top: 7%;
+  left: 5.5%;
+  right: 5.5%;
+  height: 88%;
+  display: block;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(180deg, #fdfcf8 0%, #f2efe4 100%);
+  opacity: 0;
+  transition: opacity 0s linear 0.45s;
 }
 
 /* ---------- ENVELOPE OPEN STATE ---------- */
 .is-open .envelope__flap {
   transform: rotateX(180deg);
-  z-index: 2;
+  z-index: 1;
 }
-.is-open .envelope__seal {
+.is-open .envelope__liner {
+  opacity: 1;
+}
+.is-open .envelope__card {
+  transform: translateY(-58%);
+}
+.is-open .envelope__label {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.6);
 }
+/* the pulse animation outranks a plain opacity rule, so stop it first */
 .is-open .envelope__hint {
   opacity: 0;
+  animation: none;
 }
 .is-open .envelope-scene {
   opacity: 0;
-  transform: scale(0.9) translateY(-16px);
+  transform: scale(0.92) translateY(-16px);
   pointer-events: none;
 }
 
@@ -186,7 +243,7 @@ body {
   opacity: 1;
   visibility: visible;
   transform: none;
-  transition: opacity 0.7s ease 1s, transform 0.7s ease 1s, visibility 0s;
+  transition: opacity 0.7s ease 1.5s, transform 0.7s ease 1.5s, visibility 0s;
 }
 
 .reader__bar {
@@ -215,7 +272,7 @@ body {
   height: 100%;
   display: block;
   overflow-y: auto;
-  padding: clamp(1.25rem, 4vw, 3.5rem);
+  padding: clamp(0.75rem, 1.6vw, 1.5rem) clamp(1.25rem, 4vw, 3.5rem);
 }
 
 /* =====================================================
@@ -228,19 +285,32 @@ body {
   background:
     linear-gradient(rgba(247, 242, 232, 0.35), rgba(247, 242, 232, 0.35)),
     url("paper.jpg") center / cover no-repeat #f3ede0;
-  aspect-ratio: 1 / 1.36;
-  padding: clamp(2.5rem, 6.5vw, 5.5rem) clamp(2rem, 6vw, 5rem);
+  aspect-ratio: 1 / 1.25;
+  max-height: 100%;
+  padding: clamp(1.5rem, 3.5vw, 3rem) clamp(2rem, 6vw, 5rem) clamp(1.25rem, 3vw, 2.5rem) clamp(1.5rem, 3.5vw, 3rem);
   border: 1px solid #e7dcc6;
   border-radius: 2px;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
-  row-gap: clamp(1.75rem, 4vw, 3rem);
+  row-gap: clamp(1.25rem, 3vw, 2.25rem);
   box-shadow:
-    0 2px 5px rgba(40, 45, 30, 0.10),
-    0 14px 30px rgba(40, 45, 30, 0.18),
-    0 32px 64px rgba(20, 30, 20, 0.26),
-    inset 0 0 70px rgba(120, 100, 60, 0.06);
+    0 2px 4px rgba(40, 45, 30, 0.10),
+    0 10px 22px rgba(40, 45, 30, 0.17),
+    0 22px 46px rgba(20, 30, 20, 0.24),
+    inset 0 0 55px rgba(120, 100, 60, 0.06);
+}
+
+/* a letter with photos runs to the full paper proportion rather than
+   being capped to the window — it spills past the fold and .page scrolls
+   the rest. Letters without photos stay fitted to the screen. */
+.doc__sheet:has(.doc__photos) {
+  /* height follows the content instead of the paper ratio, so the
+     signature sits just under the prints rather than being pushed to
+     the foot of a sheet that is taller than it needs to be */
+  aspect-ratio: auto;
+  max-height: none;
+  height: auto;
 }
 
 /* date / occasion block */
@@ -263,6 +333,8 @@ body {
   outline: none;
   display: flex;
   flex-direction: column;
+  /* keep an oversized photo strip from widening the column */
+  min-width: 0;
 }
 .doc__text {
   font-size: 0.98rem;
@@ -289,10 +361,69 @@ body {
   line-height: 1.85;
 }
 
+/* photo prints dropped onto the letter — each a different size, nudged
+   up or down and overlapping its neighbour, so it reads as a loose pile */
+/* the strip is sized to its contents and centred on the sheet itself,
+   so however far it outgrows the text column it spills evenly both ways.
+   The offset in `left` cancels the sheet's uneven left/right padding. */
+.doc__photos {
+  position: relative;
+  width: max-content;
+  left: calc(50% + (clamp(2rem, 6vw, 5rem) - clamp(1.5rem, 3.5vw, 3rem)) / 2);
+  transform: translateX(-50%);
+  margin: 0.35rem 0 0;
+  padding: 0.35rem 0 0.2rem;
+}
+/* one line of prints, free to run wider than the sheet and spill
+   over its edges — nothing here clips them */
+.doc__photo-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.doc__photo {
+  position: relative;
+  margin: 0;
+  padding: 0.4rem 0.4rem 1.05rem;
+  background: #fdfbf6;
+  border: 1px solid #e7dcc6;
+  box-shadow:
+    0 2px 4px rgba(40, 45, 30, 0.12),
+    0 9px 20px rgba(40, 45, 30, 0.17);
+}
+/* each print laps a little over the one before it */
+.doc__photo + .doc__photo {
+  margin-left: -1.15rem;
+}
+.doc__photo img {
+  display: block;
+  width: auto;
+}
+
+/* tilt and vertical drift alternate along a row */
+.doc__photo:nth-child(1) {
+  z-index: 2;
+  transform: rotate(-3deg) translateY(-5px);
+}
+.doc__photo:nth-child(2) {
+  z-index: 4;
+  transform: rotate(2.4deg) translateY(9px);
+}
+.doc__photo:nth-child(3) {
+  z-index: 3;
+  transform: rotate(-2deg) translateY(-11px);
+}
+/* size steps — mix them so no two prints match */
+.doc__photo--sm img { height: clamp(148px, 21vh, 235px); }
+.doc__photo--md img { height: clamp(164px, 23vh, 260px); }
+.doc__photo--lg img { height: clamp(182px, 25.5vh, 288px); }
+.doc__photo--xl img { height: clamp(200px, 28vh, 315px); }
+
 /* signature, pushed toward the bottom of the page */
 .doc__sign {
   margin-top: auto;
-  padding-top: 2.5rem;
+  padding-top: 1.8rem;
 }
 .doc__scribble {
   font-family: "Snell Roundhand", "Segoe Script", "Bradley Hand", "Brush Script MT", cursive;
@@ -320,20 +451,19 @@ body {
   transform: translateY(-50%);
   width: 54px;
   height: 54px;
-  border-radius: 50%;
-  border: 1px solid #e6d8c2;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--accent);
-  font-size: 2rem;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--on-dark-soft);
+  font-size: 2.6rem;
   line-height: 1;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(80, 60, 30, 0.16);
-  transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease;
+  transition: transform 0.15s ease, opacity 0.2s ease, color 0.2s ease;
   z-index: 5;
 }
 .reader__nav:hover:not(:disabled) {
-  transform: translateY(-50%) scale(1.08);
-  background: #fff;
+  transform: translateY(-50%) scale(1.12);
+  color: var(--on-dark);
 }
 .reader__nav:disabled {
   opacity: 0.25;
@@ -348,16 +478,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.6rem;
-  padding: 1rem 1rem 1.4rem;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem 0.6rem;
 }
 .reader__dots {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 .reader__dot {
-  width: 11px;
-  height: 11px;
+  width: 7px;
+  height: 7px;
   padding: 0;
   border-radius: 50%;
   border: none;
@@ -396,6 +526,11 @@ body {
     padding: 2rem 1.5rem 2.5rem;
   }
   .doc__meta { margin: 1.25rem 0 0; }
+  .doc__photo + .doc__photo { margin-left: -0.8rem; }
+  .doc__photo--sm img { height: clamp(105px, 16vh, 140px); }
+  .doc__photo--md img { height: clamp(118px, 18vh, 156px); }
+  .doc__photo--lg img { height: clamp(130px, 20vh, 172px); }
+  .doc__photo--xl img { height: clamp(142px, 22vh, 188px); }
   .doc__scribble { font-size: 2.1rem; }
 }
 

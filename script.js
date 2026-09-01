@@ -59,7 +59,7 @@
     window.setTimeout(function () {
       var firstName = reader.querySelector(".doc__name");
       if (firstName) firstName.focus({ preventScroll: true });
-    }, 1400);
+    }, 2100);
   }
 
   // A <button> fires click for mouse and keyboard (Enter / Space) alike.
