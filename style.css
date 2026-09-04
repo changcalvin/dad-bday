@@ -415,10 +415,10 @@ body {
   transform: rotate(-2deg) translateY(-11px);
 }
 /* size steps — mix them so no two prints match */
-.doc__photo--sm img { height: clamp(148px, 21vh, 235px); }
-.doc__photo--md img { height: clamp(164px, 23vh, 260px); }
-.doc__photo--lg img { height: clamp(182px, 25.5vh, 288px); }
-.doc__photo--xl img { height: clamp(200px, 28vh, 315px); }
+.doc__photo--sm img { height: clamp(169px, 23.9vh, 268px); }
+.doc__photo--md img { height: clamp(187px, 26.2vh, 296px); }
+.doc__photo--lg img { height: clamp(207px, 29.1vh, 328px); }
+.doc__photo--xl img { height: clamp(228px, 31.9vh, 359px); }
 
 /* signature, pushed toward the bottom of the page */
 .doc__sign {
@@ -527,10 +527,10 @@ body {
   }
   .doc__meta { margin: 1.25rem 0 0; }
   .doc__photo + .doc__photo { margin-left: -0.8rem; }
-  .doc__photo--sm img { height: clamp(105px, 16vh, 140px); }
-  .doc__photo--md img { height: clamp(118px, 18vh, 156px); }
-  .doc__photo--lg img { height: clamp(130px, 20vh, 172px); }
-  .doc__photo--xl img { height: clamp(142px, 22vh, 188px); }
+  .doc__photo--sm img { height: clamp(120px, 18.2vh, 160px); }
+  .doc__photo--md img { height: clamp(135px, 20.5vh, 178px); }
+  .doc__photo--lg img { height: clamp(148px, 22.8vh, 196px); }
+  .doc__photo--xl img { height: clamp(162px, 25vh, 214px); }
   .doc__scribble { font-size: 2.1rem; }
 }
 
